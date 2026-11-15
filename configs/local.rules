@@ -1,0 +1,11 @@
+# Custom Snort 3 detection rules - DoS/DDoS Simulation Lab
+# Threshold: more than 20 matching packets from one source within 2 seconds.
+
+# ICMP: echo requests only (itype:8), refined after the first test (see README)
+alert icmp any any -> $HOME_NET any (msg:"POSSIBLE ICMP FLOOD DETECTED"; itype:8; detection_filter:track by_src,count 20,seconds 2; sid:1000001; rev:1;)
+
+# TCP SYN
+alert tcp any any -> $HOME_NET any (flags:S; msg:"POSSIBLE SYN FLOOD DETECTED"; detection_filter:track by_src,count 20,seconds 2; sid:1000002; rev:1;)
+
+# UDP
+alert udp any any -> $HOME_NET any (msg:"POSSIBLE UDP FLOOD DETECTED"; detection_filter:track by_src,count 20,seconds 2; sid:1000003; rev:1;)
